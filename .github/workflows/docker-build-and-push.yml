@@ -22,10 +22,10 @@ jobs:
 
     - name: Build and Push App Image
       run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/mvs-app:latest ./app
-        docker push ghcr.io/${{ github.repository_owner }}/mvs-app:latest
+        docker build -t ghcr.io/babsyit/mvs-app:latest ./app
+        docker push ghcr.io/babsyit/mvs-app:latest
 
     - name: Build and Push DB Image
       run: |
-        docker build -t ghcr.io/${{ github.repository_owner }}/mvs-db:latest ./db
-        docker push ghcr.io/${{ github.repository_owner }}/mvs-db:latest
+        docker build -t ghcr.io/babsyit/mvs-db:latest ./db
+        docker push ghcr.io/babsyit/mvs-db:latest
