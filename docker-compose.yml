@@ -1,0 +1,32 @@
+version: '3.9'
+services:
+  mvs-app:
+    image: ghcr.io/\${GITHUB_USERNAME}/mvs-app:latest
+    container_name: mvs-app-container
+    ports:
+      - "8080:80"
+    environment:
+      - DB_HOST=mvs-db
+      - DB_USER=\${DB_USER}
+      - DB_PASSWORD=\${DB_PASSWORD}
+      - DB_NAME=\${DB_NAME}
+      - APP_DOMAIN=\${APP_DOMAIN}
+      - SMTP_HOST=\${SMTP_HOST}
+      - SMTP_PORT=\${SMTP_PORT}
+      - SMTP_USERNAME=\${SMTP_USERNAME}
+      - SMTP_PASSWORD=\${SMTP_PASSWORD}
+      - SMTP_FROM=\${SMTP_FROM}
+      - SMTP_FROM_NAME=\${SMTP_FROM_NAME}
+    depends_on:
+      - mvs-db
+
+  mvs-db:
+    image: ghcr.io/\${GITHUB_USERNAME}/mvs-db:latest
+    container_name: mvs-db-container
+    environment:
+      MYSQL_ROOT_PASSWORD: \${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE=\${DB_NAME}
+      MYSQL_USER=\${DB_USER}
+      MYSQL_PASSWORD=\${DB_PASSWORD}
+    ports:
+      - "3306:3306"
