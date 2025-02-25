@@ -29,8 +29,8 @@ jobs:
     - name: Build and Push App Image
       run: |
         docker buildx create --use
-        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/\${GITHUB_USERNAME}/mvs-app:latest ./app --push
+        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/babsyit/mvs-app:latest ./app --push
 
     - name: Build and Push DB Image
       run: |
-        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/\${GITHUB_USERNAME}/mvs-db:latest ./db --push
+        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/babsyit/mvs-db:latest ./db --push
