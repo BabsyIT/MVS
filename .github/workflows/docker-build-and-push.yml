@@ -13,24 +13,31 @@ jobs:
     - name: Checkout Repository
       uses: actions/checkout@v4
 
+    - name: Set up QEMU (für Cross-Arch Builds)
+      uses: docker/setup-qemu-action@v2
+
+    - name: Set up Docker Buildx (für Multi-Arch Builds)
+      uses: docker/setup-buildx-action@v2
+
     - name: Log in to GitHub Container Registry
       uses: docker/login-action@v2
       with:
         registry: ghcr.io
-        username: \${{ github.actor }}
-        password: \${{ secrets.GITHUB_TOKEN }}
+        username: ${{ github.actor }}
+        password: ${{ secrets.GITHUB_TOKEN }}
 
-    - name: Set up QEMU
-      uses: docker/setup-qemu-action@v2
+    - name: Build and Push App Image (Multi-Arch)
+      uses: docker/build-push-action@v5
+      with:
+        context: ./app
+        push: true
+        tags: ghcr.io/babsyit/mvs-app:latest
+        platforms: linux/amd64,linux/arm64
 
-    - name: Set up Docker Buildx
-      uses: docker/setup-buildx-action@v2
-
-    - name: Build and Push App Image
-      run: |
-        docker buildx create --use
-        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/babsyit/mvs-app:latest ./app --push
-
-    - name: Build and Push DB Image
-      run: |
-        docker buildx build --platform linux/amd64,linux/arm64 -t ghcr.io/babsyit/mvs-db:latest ./db --push
+    - name: Build and Push DB Image (Multi-Arch)
+      uses: docker/build-push-action@v5
+      with:
+        context: ./db
+        push: true
+        tags: ghcr.io/babsyit/mvs-db:latest
+        platforms: linux/amd64,linux/arm64
